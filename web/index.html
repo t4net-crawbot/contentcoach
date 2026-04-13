@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentCoach — AI Social Media Manager for Small Business</title>
+    <meta name="description" content="Your AI social media coach that nudges you weekly, learns your voice, and writes your content. Built for aestheticians, beauty pros, and solo entrepreneurs.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --accent: #00CEC9;
+            --dark: #2D3436;
+            --gray: #636E72;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background: var(--white);
+        }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        
+        /* Nav */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: var(--accent); }
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            margin-left: 32px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108, 92, 231, 0.3);
+        }
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            border: 2px solid var(--primary);
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: var(--light); }
+        
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        .hero-buttons { display: flex; gap: 16px; justify-content: center; }
+        
+        /* Problem */
+        .problem {
+            background: var(--light);
+            padding: 60px 0;
+        }
+        .problem h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; }
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+        .pain-card {
+            background: var(--white);
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .pain-card .emoji { font-size: 2rem; margin-bottom: 12px; }
+        .pain-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+        .pain-card p { color: var(--gray); font-size: 0.95rem; }
+        
+        /* How it works */
+        .how-it-works { padding: 80px 0; }
+        .how-it-works h2 { text-align: center; font-size: 2rem; margin-bottom: 48px; }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            counter-reset: step;
+        }
+        .step {
+            text-align: center;
+            position: relative;
+        }
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            font-weight: 800;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .step h3 { font-size: 1.1rem; margin-bottom: 8px; }
+        .step p { color: var(--gray); font-size: 0.95rem; }
+        
+        /* Features */
+        .features {
+            background: var(--light);
+            padding: 80px 0;
+        }
+        .features h2 { text-align: center; font-size: 2rem; margin-bottom: 48px; }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+        .feature {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .feature .icon { font-size: 2rem; margin-bottom: 12px; }
+        .feature h3 { margin-bottom: 8px; }
+        .feature p { color: var(--gray); font-size: 0.95rem; }
+        
+        /* Pricing */
+        .pricing { padding: 80px 0; text-align: center; }
+        .pricing h2 { font-size: 2rem; margin-bottom: 48px; }
+        .price-card {
+            max-width: 420px;
+            margin: 0 auto;
+            background: var(--white);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(108, 92, 231, 0.15);
+        }
+        .price-card .plan-name { font-size: 1.1rem; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .price-card .price { font-size: 3.5rem; font-weight: 800; margin: 16px 0; }
+        .price-card .price span { font-size: 1rem; color: var(--gray); font-weight: 400; }
+        .price-card ul { list-style: none; text-align: left; margin: 24px 0; }
+        .price-card li { padding: 8px 0; color: var(--gray); }
+        .price-card li::before { content: "✓ "; color: var(--accent); font-weight: 700; }
+        
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), #8B5CF6);
+            color: var(--white);
+            text-align: center;
+            padding: 80px 0;
+        }
+        .cta h2 { font-size: 2rem; margin-bottom: 16px; }
+        .cta p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 32px; }
+        .cta .btn-primary { background: var(--white); color: var(--primary); }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        footer a { color: var(--gray); text-decoration: none; }
+        footer a:hover { color: var(--primary); }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1.1rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            nav { flex-wrap: wrap; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo">Content<span>Coach</span></a>
+            <div class="nav-links">
+                <a href="#how">How It Works</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="/dashboard" class="btn-primary" style="margin-left: 16px;">Log In</a>
+            </div>
+        </nav>
+        
+        <section class="hero">
+            <h1>Your social media,<br><span class="gradient">on autopilot.</span></h1>
+            <p>An AI coach that learns your voice, nudges you weekly, and writes scroll-stopping content for your business.</p>
+            <div class="hero-buttons">
+                <a href="#pricing" class="btn-primary">Start Free Trial</a>
+                <a href="#how" class="btn-secondary">See How It Works</a>
+            </div>
+        </section>
+    </div>
+    
+    <section class="problem">
+        <div class="container">
+            <h2>Social media shouldn't feel like a second job</h2>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="emoji">😵‍💫</div>
+                    <h3>Don't know what to post</h3>
+                    <p>Staring at a blank screen every week, posting random stuff that gets no engagement.</p>
+                </div>
+                <div class="pain-card">
+                    <div class="emoji">📅</div>
+                    <h3>Can't stay consistent</h3>
+                    <p>You post once, then three weeks pass. Your audience forgets you exist.</p>
+                </div>
+                <div class="pain-card">
+                    <div class="emoji">✍️</div>
+                    <h3>Writing takes forever</h3>
+                    <p>An hour to write one caption? You've got clients to see and a business to run.</p>
+                </div>
+                <div class="pain-card">
+                    <div class="emoji">🤖</div>
+                    <h3>AI tools sound robotic</h3>
+                    <p>ChatGPT writes generic stuff that sounds nothing like you. Your audience can tell.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="how-it-works" id="how">
+        <div class="container">
+            <h2>How ContentCoach works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Tell us about your business</h3>
+                    <p>Quick 5-minute chat about what you do, who your clients are, and where you post.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Get weekly nudges</h3>
+                    <p>A friendly text or email reminding you it's content time — with topic ideas ready.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Chat with your coach</h3>
+                    <p>Tell your coach what's on your mind. It asks smart questions and learns your voice.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Get ready-to-post content</h3>
+                    <p>Blog posts, captions, scripts — written in your voice, ready to copy and post.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Built for busy business owners</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <div class="icon">🎯</div>
+                    <h3>Learns your voice</h3>
+                    <p>Every conversation teaches your coach how you speak, what you care about, and what your audience loves. No generic templates.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">💬</div>
+                    <h3>Chat or text anytime</h3>
+                    <p>Use the web dashboard or just text your coach. No app to download, no complicated setup. Just talk.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">📱</div>
+                    <h3>All platforms covered</h3>
+                    <p>Instagram captions, Facebook posts, blog articles, TikTok scripts, YouTube descriptions — whatever you need.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">🔔</div>
+                    <h3>Weekly accountability</h3>
+                    <p>Your coach nudges you on your schedule. Never miss a week. Consistency is the #1 growth hack.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">🧠</div>
+                    <h3>Gets smarter over time</h3>
+                    <p>The more you chat, the better your content gets. Your coach remembers everything and improves every week.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">⚡</div>
+                    <h3>Content in minutes</h3>
+                    <p>From idea to finished post in under 5 minutes. Your coach handles the writing, you handle the posting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2>Simple, honest pricing</h2>
+            <div class="price-card">
+                <div class="plan-name">Pro</div>
+                <div class="price">$29<span>/month</span></div>
+                <ul>
+                    <li>Unlimited content generation</li>
+                    <li>Weekly nudges via SMS & email</li>
+                    <li>Chat with your AI coach anytime</li>
+                    <li>All platforms supported</li>
+                    <li>Learns your unique voice</li>
+                    <li>Cancel anytime — no contracts</li>
+                </ul>
+                <a href="/signup" class="btn-primary" style="width: 100%; text-align: center;">Start 14-Day Free Trial</a>
+                <p style="margin-top: 12px; color: var(--gray); font-size: 0.85rem;">No credit card required. Full access for 14 days.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta">
+        <div class="container">
+            <h2>Stop dreading social media.</h2>
+            <p>Join business owners who post consistently and watch their audience grow.</p>
+            <a href="/signup" class="btn-primary">Start Your Free Trial →</a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Tetranet. All rights reserved. | <a href="mailto:alex@fournet.win">alex@fournet.win</a></p>
+        </div>
+    </footer>
+</body>
+</html>

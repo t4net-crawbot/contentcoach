@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentCoach Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --accent: #00CEC9;
+            --dark: #2D3436;
+            --gray: #636E72;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+            --border: #E0E0E0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .dash-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dash-header .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .dash-header .logo span { color: var(--accent); }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        .user-info .name { font-weight: 600; color: var(--dark); }
+        
+        /* Main layout */
+        .dash-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-nav {
+            padding: 16px;
+        }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .sidebar-nav a:hover { background: var(--light); }
+        .sidebar-nav a.active { background: var(--primary); color: var(--white); }
+        .sidebar-nav a .icon { font-size: 1.2rem; }
+        
+        /* Content area */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Chat */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .message.coach {
+            background: var(--white);
+            border: 1px solid var(--border);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .message.client {
+            background: var(--primary);
+            color: var(--white);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .message .sender {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .message.client .sender { color: rgba(255,255,255,0.7); }
+        .message .time {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+        .message.client .time { color: rgba(255,255,255,0.6); }
+        
+        .typing-indicator {
+            align-self: flex-start;
+            padding: 12px 20px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+            display: none;
+        }
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--gray);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+        
+        /* Input */
+        .chat-input {
+            padding: 16px 24px;
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+        }
+        .chat-input textarea {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .chat-input textarea:focus { border-color: var(--primary); }
+        .chat-input button {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .chat-input button:hover { background: var(--primary-light); }
+        .chat-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* Generate panel */
+        .generate-panel {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+        }
+        .generate-panel.active { display: flex; }
+        .gen-form {
+            padding: 24px;
+            max-width: 500px;
+        }
+        .gen-form h2 { margin-bottom: 20px; }
+        .gen-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+        .gen-form select, .gen-form input, .gen-form textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        .gen-form textarea { height: 80px; resize: vertical; }
+        .gen-form button {
+            margin-top: 20px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .gen-result {
+            padding: 24px;
+            background: var(--white);
+            border-radius: 12px;
+            margin: 0 24px;
+            white-space: pre-wrap;
+            display: none;
+            border: 1px solid var(--border);
+        }
+        .gen-result h3 { margin-bottom: 12px; color: var(--primary); }
+        
+        /* Settings panel */
+        .settings-panel { display: none; padding: 24px; }
+        .settings-panel.active { display: block; }
+        .settings-panel h2 { margin-bottom: 20px; }
+        .setting-group { margin-bottom: 20px; }
+        .setting-group label { display: block; font-weight: 600; margin-bottom: 6px; }
+        .setting-group input, .setting-group select {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            width: 300px;
+        }
+        
+        /* Login overlay */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        .login-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            width: 400px;
+            max-width: 90vw;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+        }
+        .login-card h2 { margin-bottom: 8px; }
+        .login-card p { color: var(--gray); margin-bottom: 24px; }
+        .login-card input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+        .login-card button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .message { max-width: 85%; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login overlay (shown when no client ID) -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+        <h2>Welcome to ContentCoach 👋</h2>
+        <p>Enter your email or phone to access your dashboard.</p>
+        <input type="text" id="loginInput" placeholder="your@email.com or +1 (555) 123-4567">
+        <button onclick="handleLogin()">Continue</button>
+        <p style="margin-top: 12px; font-size: 0.85rem; color: var(--gray);">
+            Don't have an account? <a href="/" style="color: var(--primary);">Start your free trial</a>
+        </p>
+    </div>
+</div>
+
+<!-- Dashboard -->
+<div class="dash-header">
+    <a href="/" class="logo">Content<span>Coach</span></a>
+    <div class="user-info">
+        <span class="name" id="clientName">—</span>
+        <span>|</span>
+        <span id="clientPlan">free trial</span>
+    </div>
+</div>
+
+<div class="dash-main">
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+            <a href="#" class="active" onclick="showPanel('chat')">
+                <span class="icon">💬</span> Chat with Coach
+            </a>
+            <a href="#" onclick="showPanel('generate')">
+                <span class="icon">✍️</span> Generate Content
+            </a>
+            <a href="#" onclick="showPanel('settings')">
+                <span class="icon">⚙️</span> Settings
+            </a>
+            <a href="/">
+                <span class="icon">🏠</span> Back to Home
+            </a>
+        </nav>
+    </div>
+    
+    <div class="content-area">
+        <!-- Chat Panel -->
+        <div class="chat-container" id="chatPanel">
+            <div class="chat-messages" id="chatMessages">
+                <div class="typing-indicator" id="typingIndicator">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+            <div class="chat-input">
+                <textarea id="chatInput" placeholder="Tell your coach what's on your mind..." rows="1" onkeydown="handleChatKey(event)"></textarea>
+                <button id="sendBtn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+        
+        <!-- Generate Panel -->
+        <div class="generate-panel" id="generatePanel">
+            <div class="gen-form">
+                <h2>Generate Content ✍️</h2>
+                <label>Content Type</label>
+                <select id="genType">
+                    <option value="instagram_caption">Instagram Caption</option>
+                    <option value="facebook_post">Facebook Post</option>
+                    <option value="blog_post">Blog Post</option>
+                    <option value="video_script">Video Script (Reels/TikTok)</option>
+                    <option value="email_newsletter">Email Newsletter</option>
+                </select>
+                <label>Topic or Idea</label>
+                <textarea id="genTopic" placeholder="What do you want to talk about? Be as vague or specific as you like."></textarea>
+                <label>Platform</label>
+                <select id="genTarget">
+                    <option value="instagram">Instagram</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="blog">Blog/Website</option>
+                    <option value="email">Email</option>
+                </select>
+                <button onclick="generateContent()">Generate Content</button>
+            </div>
+            <div class="gen-result" id="genResult">
+                <h3>Your Content</h3>
+                <div id="genOutput"></div>
+                <button onclick="copyContent()" style="margin-top: 12px; background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">📋 Copy to Clipboard</button>
+            </div>
+        </div>
+        
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settingsPanel">
+            <h2>Settings</h2>
+            <div class="setting-group">
+                <label>Business Name</label>
+                <input type="text" id="setBusiness" placeholder="Your Business Name">
+            </div>
+            <div class="setting-group">
+                <label>Niche</label>
+                <input type="text" id="setNiche" placeholder="e.g. Aesthetics, Beauty, Fitness">
+            </div>
+            <div class="setting-group">
+                <label>Nudge Day</label>
+                <select id="setNudgeDay">
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label>Nudge Time</label>
+                <input type="time" id="setNudgeTime" value="09:00">
+            </div>
+            <button onclick="saveSettings()" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;">Save Settings</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API = window.location.origin;
+    let clientId = localStorage.getItem('smm_client_id');
+    let clientData = null;
+    
+    // Check URL for client ID (for direct links)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('id')) {
+        clientId = urlParams.get('id');
+        localStorage.setItem('smm_client_id', clientId);
+    }
+    
+    // Initialize
+    if (clientId) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        loadClient();
+        loadHistory();
+    }
+    
+    function handleLogin() {
+        const input = document.getElementById('loginInput').value.trim();
+        if (!input) return;
+        
+        // Try to find existing client, or create new one
+        fetch(API + '/api/clients/lookup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contact: input })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.id) {
+                clientId = data.id;
+                localStorage.setItem('smm_client_id', clientId);
+                document.getElementById('loginOverlay').style.display = 'none';
+                loadClient();
+                loadHistory();
+            }
+        })
+        .catch(() => {
+            alert('Could not find your account. Please sign up first!');
+        });
+    }
+    
+    function loadClient() {
+        fetch(API + '/api/clients/' + clientId)
+            .then(r => r.json())
+            .then(data => {
+                clientData = data;
+                document.getElementById('clientName').textContent = data.name || data.business_name || 'Client';
+                document.getElementById('clientPlan').textContent = data.plan || 'free trial';
+                // Fill settings
+                if (data.business_name) document.getElementById('setBusiness').value = data.business_name;
+                if (data.niche) document.getElementById('setNiche').value = data.niche;
+                if (data.nudge_day) document.getElementById('setNudgeDay').value = data.nudge_day;
+                if (data.nudge_time) document.getElementById('setNudgeTime').value = data.nudge_time;
+            })
+            .catch(err => {
+                console.error('Failed to load client:', err);
+                localStorage.removeItem('smm_client_id');
+                document.getElementById('loginOverlay').style.display = 'flex';
+            });
+    }
+    
+    function loadHistory() {
+        fetch(API + '/api/clients/' + clientId + '/chat/history')
+            .then(r => r.json())
+            .then(messages => {
+                const container = document.getElementById('chatMessages');
+                const typing = document.getElementById('typingIndicator');
+                // Clear existing messages
+                container.querySelectorAll('.message').forEach(el => el.remove());
+                
+                messages.forEach(msg => {
+                    const div = document.createElement('div');
+                    div.className = 'message ' + (msg.role === 'coach' ? 'coach' : 'client');
+                    div.innerHTML = `<div class="sender">${msg.role === 'coach' ? 'Coach' : 'You'}</div>${escapeHtml(msg.content)}<div class="time">${formatTime(msg.created_at)}</div>`;
+                    container.insertBefore(div, typing);
+                });
+                container.scrollTop = container.scrollHeight;
+            })
+            .catch(err => console.error('Failed to load history:', err));
+    }
+    
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text || !clientId) return;
+        
+        input.value = '';
+        input.style.height = 'auto';
+        
+        // Show user message
+        addMessage('client', text);
+        
+        // Show typing
+        document.getElementById('typingIndicator').style.display = 'block';
+        scrollChat();
+        document.getElementById('sendBtn').disabled = true;
+        
+        fetch(API + '/api/clients/' + clientId + '/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+        })
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('typingIndicator').style.display = 'none';
+            addMessage('coach', data.reply);
+            document.getElementById('sendBtn').disabled = false;
+        })
+        .catch(err => {
+            document.getElementById('typingIndicator').style.display = 'none';
+            addMessage('coach', 'Sorry, something went wrong. Please try again.');
+            document.getElementById('sendBtn').disabled = false;
+        });
+    }
+    
+    function addMessage(role, content) {
+        const container = document.getElementById('chatMessages');
+        const typing = document.getElementById('typingIndicator');
+        const div = document.createElement('div');
+        div.className = 'message ' + (role === 'coach' ? 'coach' : 'client');
+        div.innerHTML = `<div class="sender">${role === 'coach' ? 'Coach' : 'You'}</div>${escapeHtml(content)}<div class="time">${formatTime()}</div>`;
+        container.insertBefore(div, typing);
+        scrollChat();
+    }
+    
+    function generateContent() {
+        const type = document.getElementById('genType').value;
+        const topic = document.getElementById('genTopic').value.trim();
+        const target = document.getElementById('genTarget').value;
+        
+        if (!topic || !clientId) return;
+        
+        document.getElementById('genResult').style.display = 'block';
+        document.getElementById('genOutput').textContent = 'Generating...';
+        
+        fetch(API + '/api/clients/' + clientId + '/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type, topic, target })
+        })
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('genOutput').textContent = data.content || data.error || 'Generation failed';
+        })
+        .catch(err => {
+            document.getElementById('genOutput').textContent = 'Error: ' + err.message;
+        });
+    }
+    
+    function copyContent() {
+        const text = document.getElementById('genOutput').textContent;
+        navigator.clipboard.writeText(text);
+    }
+    
+    function saveSettings() {
+        // TODO: PUT /api/clients/:id
+        alert('Settings saved! (endpoint coming soon)');
+    }
+    
+    function showPanel(panel) {
+        document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+        event.target.closest('a').classList.add('active');
+        
+        document.getElementById('chatPanel').style.display = panel === 'chat' ? 'flex' : 'none';
+        document.getElementById('generatePanel').classList.toggle('active', panel === 'generate');
+        document.getElementById('settingsPanel').classList.toggle('active', panel === 'settings');
+    }
+    
+    function handleChatKey(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    }
+    
+    // Auto-resize textarea
+    document.getElementById('chatInput').addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+    
+    function scrollChat() {
+        const c = document.getElementById('chatMessages');
+        c.scrollTop = c.scrollHeight;
+    }
+    
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML.replace(/\n/g, '<br>');
+    }
+    
+    function formatTime(ts) {
+        if (!ts) return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+</script>
+</body>
+</html>
