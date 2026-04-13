@@ -174,21 +174,52 @@
         /* Pricing */
         .pricing { padding: 80px 0; text-align: center; }
         .pricing h2 { font-size: 2rem; margin-bottom: 48px; }
-        .price-card {
-            max-width: 420px;
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            max-width: 800px;
             margin: 0 auto;
+        }
+        .price-card {
             background: var(--white);
-            border: 2px solid var(--primary);
+            border: 2px solid var(--border);
             border-radius: 16px;
-            padding: 40px;
+            padding: 40px 32px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .price-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+        .price-card.featured {
+            border-color: var(--primary);
             box-shadow: 0 8px 32px rgba(108, 92, 231, 0.15);
         }
+        .price-card .plan-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: var(--white);
+            padding: 4px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         .price-card .plan-name { font-size: 1.1rem; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
-        .price-card .price { font-size: 3.5rem; font-weight: 800; margin: 16px 0; }
+        .price-card .price { font-size: 3.5rem; font-weight: 800; margin: 16px 0 4px; }
         .price-card .price span { font-size: 1rem; color: var(--gray); font-weight: 400; }
+        .price-card .plan-tagline { color: var(--gray); font-size: 0.9rem; margin-bottom: 24px; }
         .price-card ul { list-style: none; text-align: left; margin: 24px 0; }
-        .price-card li { padding: 8px 0; color: var(--gray); }
+        .price-card li { padding: 8px 0; color: var(--gray); font-size: 0.9rem; }
         .price-card li::before { content: "✓ "; color: var(--accent); font-weight: 700; }
+        .price-card .plan-note { margin-top: 12px; color: var(--gray); font-size: 0.8rem; }
         
         /* CTA */
         .cta {
@@ -340,19 +371,38 @@
     <section class="pricing" id="pricing">
         <div class="container">
             <h2>Simple, honest pricing</h2>
-            <div class="price-card">
-                <div class="plan-name">Pro</div>
-                <div class="price">$29<span>/month</span></div>
-                <ul>
-                    <li>Unlimited content generation</li>
-                    <li>Weekly nudges via SMS & email</li>
-                    <li>Chat with your AI coach anytime</li>
-                    <li>All platforms supported</li>
-                    <li>Learns your unique voice</li>
-                    <li>Cancel anytime — no contracts</li>
-                </ul>
-                <a href="/signup" class="btn-primary" style="width: 100%; text-align: center;">Start 14-Day Free Trial</a>
-                <p style="margin-top: 12px; color: var(--gray); font-size: 0.85rem;">No credit card required. Full access for 14 days.</p>
+            <div class="price-grid">
+                <div class="price-card">
+                    <div class="plan-name">Coach</div>
+                    <div class="price">$29<span>/month</span></div>
+                    <p class="plan-tagline">Your AI content coach, always on</p>
+                    <ul>
+                        <li>Unlimited content generation</li>
+                        <li>Weekly nudges via SMS & email</li>
+                        <li>Chat with your coach anytime</li>
+                        <li>All platforms: Instagram, Facebook, TikTok, YouTube</li>
+                        <li>Learns your unique voice</li>
+                        <li>Cancel anytime — no contracts</li>
+                    </ul>
+                    <a href="/signup" class="btn-primary" style="width: 100%; text-align: center;">Start 14-Day Free Trial</a>
+                    <p class="plan-note">No credit card required.</p>
+                </div>
+                <div class="price-card featured">
+                    <div class="plan-badge">Most Popular</div>
+                    <div class="plan-name">Coach + Calls</div>
+                    <div class="price">$79<span>/month</span></div>
+                    <p class="plan-tagline">Everything in Coach, plus live phone sessions</p>
+                    <ul>
+                        <li>Everything in Coach plan</li>
+                        <li>Monthly 15-min phone check-in with your coach</li>
+                        <li>Coach calls to brainstorm content ideas live</li>
+                        <li>Voice notes — talk instead of type</li>
+                        <li>Priority content generation</li>
+                        <li>Dedicated phone number for your coach</li>
+                    </ul>
+                    <a href="/signup?plan=plus" class="btn-primary" style="width: 100%; text-align: center;">Start 14-Day Free Trial</a>
+                    <p class="plan-note">No credit card required.</p>
+                </div>
             </div>
         </div>
     </section>
