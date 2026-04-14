@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelance Services — ContentCoach</title>
+    <meta name="description" content="Hire us for Python automation, AI prompt engineering, data visualization, API development, resume writing, and Go backend development.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --accent: #00CEC9;
+            --dark: #2D3436;
+            --gray: #555B5E;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background: var(--white);
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        /* Nav */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: var(--accent); }
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            margin-left: 32px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108, 92, 231, 0.3);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--dark);
+            transition: all 0.3s;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .page-header h1 span { color: var(--primary); }
+        .page-header p {
+            font-size: 1.15rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            padding: 40px 0 80px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 32px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+        }
+        .service-card h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .service-card h2 .icon {
+            font-size: 1.5rem;
+        }
+
+        /* Tiers */
+        .tiers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .tier {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: var(--light);
+        }
+        .tier-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        .tier-price {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+        .tier-features {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        .order-btn {
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .order-btn:hover {
+            background: #5a4bd4;
+            transform: translateY(-1px);
+        }
+
+        .cta-note {
+            text-align: center;
+            padding: 0 0 60px;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        .cta-note a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--light);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        footer a { color: var(--gray); text-decoration: none; }
+        footer a:hover { color: var(--primary); }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 16px 24px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+                z-index: 100;
+            }
+            .nav-links.open { display: flex; }
+            .nav-links a { margin-left: 0; margin-bottom: 12px; }
+            .page-header h1 { font-size: 1.8rem; }
+            .services-grid { grid-template-columns: 1fr; gap: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav>
+        <a href="/" class="logo">Content<span>Coach</span></a>
+        <button class="hamburger" aria-label="Menu" onclick="this.classList.toggle('active');document.querySelector('.nav-links').classList.toggle('open');">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#how">How It Works</a>
+            <a href="/#features">Features</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/services.html" style="color: var(--primary); font-weight: 700;">Services</a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <h1>Hire <span>Us</span></h1>
+        <p>Need something built, automated, or polished? We deliver clean work, fast. Pick a service and tier that fits your budget.</p>
+    </section>
+
+    <div class="services-grid">
+
+        <!-- Python Script Automation -->
+        <div class="service-card">
+            <h2><span class="icon">🐍</span> Python Script Automation</h2>
+            <div class="tiers">
+                <div class="tier">
+                    <div><div class="tier-name">Basic</div><div class="tier-features">Single script, 48hr delivery</div></div>
+                    <div class="tier-price">$15</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Standard</div><div class="tier-features">Complex script, 24hr delivery</div></div>
+                    <div class="tier-price">$35</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Premium</div><div class="tier-features">Full pipeline + 7-day support</div></div>
+                    <div class="tier-price">$75</div>
+                </div>
+            </div>
+            <a href="mailto:alex@fournet.win?subject=Python%20Script%20Automation%20-%20Service%20Request" class="order-btn">Order Now</a>
+        </div>
+
+        <!-- Custom AI Prompt Engineering -->
+        <div class="service-card">
+            <h2><span class="icon">🧠</span> AI Prompt Engineering</h2>
+            <div class="tiers">
+                <div class="tier">
+                    <div><div class="tier-name">Basic</div><div class="tier-features">5 custom prompts, 48hr delivery</div></div>
+                    <div class="tier-price">$10</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Standard</div><div class="tier-features">15 prompts + testing, 24hr</div></div>
+                    <div class="tier-price">$30</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Premium</div><div class="tier-features">Full system + templates + guide</div></div>
+                    <div class="tier-price">$60</div>
+                </div>
+            </div>
+            <a href="mailto:alex@fournet.win?subject=AI%20Prompt%20Engineering%20-%20Service%20Request" class="order-btn">Order Now</a>
+        </div>
+
+        <!-- Data Cleaning & Visualization -->
+        <div class="service-card">
+            <h2><span class="icon">📊</span> Data Cleaning & Visualization</h2>
+            <div class="tiers">
+                <div class="tier">
+                    <div><div class="tier-name">Basic</div><div class="tier-features">Clean 1 dataset + basic charts</div></div>
+                    <div class="tier-price">$20</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Standard</div><div class="tier-features">Multi-dataset + dashboard</div></div>
+                    <div class="tier-price">$50</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Premium</div><div class="tier-features">Full pipeline + automated reports</div></div>
+                    <div class="tier-price">$100</div>
+                </div>
+            </div>
+            <a href="mailto:alex@fournet.win?subject=Data%20Cleaning%20%26%20Visualization%20-%20Service%20Request" class="order-btn">Order Now</a>
+        </div>
+
+        <!-- API Integration & Development -->
+        <div class="service-card">
+            <h2><span class="icon">🔗</span> API Integration & Development</h2>
+            <div class="tiers">
+                <div class="tier">
+                    <div><div class="tier-name">Basic</div><div class="tier-features">Connect 1 API, 48hr delivery</div></div>
+                    <div class="tier-price">$50</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Standard</div><div class="tier-features">Multi-API integration + docs</div></div>
+                    <div class="tier-price">$120</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Premium</div><div class="tier-features">Custom API + auth + deployment</div></div>
+                    <div class="tier-price">$250</div>
+                </div>
+            </div>
+            <a href="mailto:alex@fournet.win?subject=API%20Integration%20%26%20Development%20-%20Service%20Request" class="order-btn">Order Now</a>
+        </div>
+
+        <!-- Resume/CV Writing -->
+        <div class="service-card">
+            <h2><span class="icon">📄</span> Resume / CV Writing</h2>
+            <div class="tiers">
+                <div class="tier">
+                    <div><div class="tier-name">Basic</div><div class="tier-features">Polish existing resume, 48hr</div></div>
+                    <div class="tier-price">$15</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Standard</div><div class="tier-features">Full rewrite + cover letter</div></div>
+                    <div class="tier-price">$35</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Premium</div><div class="tier-features">Resume + cover + LinkedIn + coaching</div></div>
+                    <div class="tier-price">$75</div>
+                </div>
+            </div>
+            <a href="mailto:alex@fournet.win?subject=Resume%20CV%20Writing%20-%20Service%20Request" class="order-btn">Order Now</a>
+        </div>
+
+        <!-- Go Backend Development -->
+        <div class="service-card">
+            <h2><span class="icon">⚡</span> Go Backend Development</h2>
+            <div class="tiers">
+                <div class="tier">
+                    <div><div class="tier-name">Basic</div><div class="tier-features">Single endpoint/service, 48hr</div></div>
+                    <div class="tier-price">$50</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Standard</div><div class="tier-features">REST API + DB + auth, 72hr</div></div>
+                    <div class="tier-price">$150</div>
+                </div>
+                <div class="tier">
+                    <div><div class="tier-name">Premium</div><div class="tier-features">Full microservice + deploy + docs</div></div>
+                    <div class="tier-price">$300</div>
+                </div>
+            </div>
+            <a href="mailto:alex@fournet.win?subject=Go%20Backend%20Development%20-%20Service%20Request" class="order-btn">Order Now</a>
+        </div>
+
+    </div>
+
+    <p class="cta-note">Not sure which tier fits? <a href="mailto:alex@fournet.win?subject=Freelance%20Services%20Inquiry">Tell us what you need</a> and we'll recommend the right fit.</p>
+</div>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 Tetranet. All rights reserved. | <a href="/privacy.html">Privacy</a> | <a href="/terms.html">Terms</a> | <a href="/services.html">Services</a> | <a href="mailto:alex@fournet.win">alex@fournet.win</a></p>
+    </div>
+</footer>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(function(a) {
+    a.addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.remove('open');
+    });
+});
+</script>
+
+</body>
+</html>
