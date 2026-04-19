@@ -99,6 +99,17 @@
             margin: 0 auto 32px;
         }
         .hero-buttons { display: flex; gap: 16px; justify-content: center; }
+        .btn-hero-cta {
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 16px 36px;
+            box-shadow: 0 6px 24px rgba(108, 92, 231, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-hero-cta:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 32px rgba(108, 92, 231, 0.5);
+        }
         
         /* Problem */
         .problem {
@@ -355,7 +366,7 @@
             <h1>Social media content<br><span class="gradient">that books clients.</span></h1>
             <p>An AI coach that learns your voice, nudges you weekly, and writes scroll-stopping content for your business.</p>
             <div class="hero-buttons">
-                <a href="#pricing" class="btn-primary">Get Started</a>
+                <a href="/signup" class="btn-primary btn-hero-cta">Start Free Trial</a>
                 <a href="#how" class="btn-secondary">See How It Works</a>
             </div>
         </section>
